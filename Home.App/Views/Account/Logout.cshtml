@@ -1,0 +1,25 @@
+﻿@model System.Security.Claims.Claim
+
+@{
+	ViewData["Title"] = "Logout";
+}
+
+<h1>@Model.Value</h1>
+
+<hr />
+
+<h4>Are you sure you want to logout?</h4>
+
+<br />
+
+<form asp-action="Logout">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+	<div class="form-group">
+		<input type="submit" value="Logout" class="btn btn-primary" />
+	</div>
+</form>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

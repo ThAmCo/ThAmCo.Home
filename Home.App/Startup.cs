@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Home.App.Service;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
 
 namespace Home.App
 {
@@ -23,7 +22,22 @@ namespace Home.App
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddTransient<AuthService>();
+			services.AddHttpClient();
 			services.AddControllersWithViews();
+
+			string azureStorageUri = Environment.GetEnvironmentVariable("COOKIE_STORAGE_URI");
+
+			services.AddDataProtection()
+				.PersistKeysToAzureBlobStorage(new Uri(azureStorageUri))
+				.SetApplicationName("ThAmCo");
+
+			services.AddAuthentication("Cookies")
+				.AddCookie("Cookies", options =>
+				{
+					options.Cookie.Name = ".ThAmCo.SharedCookie";
+					options.Cookie.Path = "/";
+				});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +58,7 @@ namespace Home.App
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
