@@ -111,11 +111,11 @@ namespace Home.App.Service
 				Roles = roles
 			};
 
-			var response = await client.PostAsJsonAsync(_config.GetConnectionString("AuthConnection") + "/api/users/", request);
+			var response = await client.PostAsJsonAsync(_config.GetConnectionString("AuthConnection") + "/api/users", request);
 
 			if (!response.IsSuccessStatusCode)
 			{
-				return await response.Content.ReadAsStringAsync();
+				return (await response.Content.ReadAsStringAsync()) ?? "Failed to register account!";
 			}
 
 			return string.Empty;

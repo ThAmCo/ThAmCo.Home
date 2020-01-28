@@ -112,7 +112,7 @@ namespace Home.App.Controllers
 					return View(viewModel);
 				}
 
-				return LocalRedirect(returnUrl ?? "/");
+				return RedirectToAction(nameof(Login), new { returnUrl });
 			}
 
 			return View(viewModel);
