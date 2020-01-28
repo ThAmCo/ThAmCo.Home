@@ -87,6 +87,11 @@ namespace Home.App.Controllers
 		{
 			ViewData["ReturnUrl"] = returnUrl;
 
+			if (User.Identity.IsAuthenticated)
+			{
+				return LocalRedirect(returnUrl ?? "/");
+			}
+
 			return View();
 		}
 
