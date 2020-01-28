@@ -51,7 +51,7 @@ namespace Home.App.Controllers
 
 			if (ModelState.IsValid)
 			{
-				 string msg = await _authService.Auth(HttpContext, viewModel);
+				string msg = await _authService.Auth(HttpContext, viewModel);
 
 				if (!string.IsNullOrEmpty(msg))
 				{
@@ -99,7 +99,7 @@ namespace Home.App.Controllers
 
 			if (ModelState.IsValid)
 			{
-				string msg = await _authService.Register(viewModel.Email, viewModel.Password, "Samuel Spaghetti Hammersley", "Customer");
+				string msg = await _authService.Register(viewModel.Email, viewModel.Password, "Samuel Hammersley", "Customer");
 
 				if (!string.IsNullOrEmpty(msg))
 				{

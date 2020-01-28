@@ -83,6 +83,11 @@ namespace Home.App.Service
 
 			var discoDoc = await client.GetDiscoveryDocumentAsync(_config.GetConnectionString("AuthConnection"));
 
+			if (discoDoc.IsError)
+			{
+				return discoDoc.Error;
+			}
+
 			var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
 			{
 				Address = discoDoc.TokenEndpoint,

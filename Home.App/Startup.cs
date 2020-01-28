@@ -15,9 +15,12 @@ namespace Home.App
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		private readonly IWebHostEnvironment _environment;
+
+		public Startup(IConfiguration configuration, IWebHostEnvironment environment)
 		{
 			Configuration = configuration;
+			_environment = environment;
 		}
 
 		public IConfiguration Configuration { get; }
@@ -29,17 +32,26 @@ namespace Home.App
 			services.AddHttpClient();
 			services.AddControllersWithViews();
 
-			string storageKey = Environment.GetEnvironmentVariable("BLOB_STORAGE_KEY");
+			if (_environment.IsDevelopment())
+			{
+				services.AddDataProtection()
+					.PersistKeysToFileSystem(new DirectoryInfo(@"c:/shared-cookies"))
+					.SetApplicationName("ThAmCo");
+			}
+			else
+			{
+				string storageKey = Environment.GetEnvironmentVariable("BLOB_STORAGE_KEY");
 
-			var credentials = new StorageCredentials("thamcostorage", storageKey);
-			var storageAccount = new CloudStorageAccount(credentials, true);
-			var blobClient = storageAccount.CreateCloudBlobClient();
+				var credentials = new StorageCredentials("thamcostorage", storageKey);
+				var storageAccount = new CloudStorageAccount(credentials, true);
+				var blobClient = storageAccount.CreateCloudBlobClient();
 
-			var container = blobClient.GetContainerReference("keys");
+				CloudBlobContainer container = blobClient.GetContainerReference("keys");
 
-			services.AddDataProtection()
-				.PersistKeysToAzureBlobStorage(container, "cookies")
-				.SetApplicationName("ThAmCo");
+				services.AddDataProtection()
+					.PersistKeysToAzureBlobStorage(container, "cookies")
+					.SetApplicationName("ThAmCo");
+			}
 
 			services.AddAuthentication("Cookies")
 				.AddCookie("Cookies", options =>
