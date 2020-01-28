@@ -29,7 +29,9 @@ namespace Home.App
 			services.AddHttpClient();
 			services.AddControllersWithViews();
 
-			var credentials = new StorageCredentials("thamcostorage", "zDtWZyEDZ/I/c09yYiOMbdEK1AYqxgvpTIOsWvM69gd8l4oPoPU2/wFeuVLtq7UhdrYaLWH+fJ7YnI+RaLsC3g==");
+			string storageKey = Environment.GetEnvironmentVariable("BLOB_STORAGE_KEY");
+
+			var credentials = new StorageCredentials("thamcostorage", storageKey);
 			var storageAccount = new CloudStorageAccount(credentials, true);
 			var blobClient = storageAccount.CreateCloudBlobClient();
 
