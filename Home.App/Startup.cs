@@ -29,12 +29,9 @@ namespace Home.App
 			services.AddHttpClient();
 			services.AddControllersWithViews();
 
-			string azureStorageUri = Environment.GetEnvironmentVariable("COOKIE_STORAGE_URI");
-
-			var storageUri = new Uri(azureStorageUri);
-
 			var credentials = new StorageCredentials("thamcostorage", "zDtWZyEDZ/I/c09yYiOMbdEK1AYqxgvpTIOsWvM69gd8l4oPoPU2/wFeuVLtq7UhdrYaLWH+fJ7YnI+RaLsC3g==");
-			var blobClient = new CloudBlobClient(storageUri, credentials);
+			var storageAccount = new CloudStorageAccount(credentials, true);
+			var blobClient = storageAccount.CreateCloudBlobClient();
 
 			var container = blobClient.GetContainerReference("keys");
 
