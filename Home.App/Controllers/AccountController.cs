@@ -104,7 +104,7 @@ namespace Home.App.Controllers
 
 			if (ModelState.IsValid)
 			{
-				string msg = await _authService.Register(viewModel.Email, viewModel.Password, "Samuel Hammersley", "Customer");
+				string msg = await _authService.Register(viewModel.Email, viewModel.Password, viewModel.FullName, "Customer");
 
 				if (!string.IsNullOrEmpty(msg))
 				{
