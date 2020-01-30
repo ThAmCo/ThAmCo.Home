@@ -9,11 +9,14 @@ namespace Home.App.Models
 		public string Email { get; set; }
 
 		[DataType(DataType.Password)]
-		[StringLength(50, ErrorMessage = "Must be at least 8 characters long", MinimumLength = 6)]
+		[StringLength(50, ErrorMessage = "Must be at least 8 characters long", MinimumLength = 8)]
 		public string Password { get; set; }
 
 		[Compare("Password", ErrorMessage = "Passwords must match")]
 		public string ReTypePassword { get; set; }
+
+		[StringLength(80, ErrorMessage = "Must be at least 8 characters long", MinimumLength = 8)]
+		public string FullName { get; set; }
 
 	}
 }
